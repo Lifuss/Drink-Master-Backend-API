@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { handleMongooseError } = require("../services");
+// const { handleMongooseError } = require("../services");
 const Joi = require("joi");
 
 const categoryTypes = [
@@ -118,14 +118,40 @@ const recipeSchema = new Schema(
         ingredientId: Schema.Types.ObjectId,
       },
     ],
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
   },
   { versionKey: false, timestamps: true }
 );
 
 // recipeSchema.post("save", handleMongooseError);
 
+const addDrinkSchema = Joi.object({
+  drink: Joi.string().required(),
+  description: Joi.string().required(),
+  category: Joi.string()
+    .valid(...categoryTypes)
+    .required(),
+  glass: Joi.string()
+    .valid(...glassTypes)
+    .required(),
+  alcoholic: Joi.string().valid("Alcoholic", "Non alcoholic"),
+  ingredients: Joi.object({
+    title: Joi.string(),
+    measure: Joi.string(),
+  }),
+  instructions: Joi.string(),
+});
+
+const schemas = {
+  addDrinkSchema,
+};
+
 const Recipe = model("recipe", recipeSchema);
 
 module.exports = {
   Recipe,
+  schemas,
 };
