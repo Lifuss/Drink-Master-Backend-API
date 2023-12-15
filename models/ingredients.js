@@ -1,6 +1,6 @@
 const { model } = require("mongoose");
 const ingredientSchema = require("../schemas/mongooseSchema/ingridients");
 
-const Ingredient = model("ingredient", ingredientSchema);
+const Ingredients = model("Ingredient", ingredientSchema);
 
-module.exports = Ingredient;
+module.exports = Ingredients;

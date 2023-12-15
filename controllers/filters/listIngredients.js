@@ -1,4 +1,4 @@
-const { Ingredients } = require("../../models/ingredients");
+const Ingredients = require("../../models/ingredients");
 
 const listIngredients = async (req, res) => {
   try {
