@@ -3,9 +3,11 @@ const validateBody = require("../../middlewares/validateBody");
 
 const router = express.Router();
 
-router.get("/mainpage");
+const ctrl = require("../../controllers/drinks/drinks");
+
+router.get("/mainpage", ctrl.getAllDrinks);
 router.get("/popular");
-router.get("/:id");
+router.get("/:id", ctrl.getDrinkById);
 router.get("/search");
 
 router.get("/own");

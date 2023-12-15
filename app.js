@@ -22,7 +22,7 @@ app.use("/avatars", express.static("public/avatars/"));
 // app.use("/api/auth", authRouter);
 // app.use("/api/users", usersRouter);
 // app.use("/api/filters", filtersRouter);
-// app.use("/api/drinks", drinksRouter);
+app.use("/api/drinks", drinksRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
