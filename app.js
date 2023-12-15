@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/avatars", express.static("public/avatars/"));
 
-// app.use("/api/auth", authRouter);
+app.use("/api/auth", authRouter);
 // app.use("/api/users", usersRouter);
 // app.use("/api/filters", filtersRouter);
 // app.use("/api/drinks", drinksRouter);
