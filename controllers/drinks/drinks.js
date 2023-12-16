@@ -34,6 +34,7 @@ const getDrinkById = async (req, res) => {
 
 const addOwnDrink = async (req, res) => {
   const { _id: owner, isAdult } = req.user;
+
   if (!isAdult && req.body.alcoholic === "Alcoholic") {
     return res.status(400).json({
       message: "Non-adult cannot add alcoholic drinks",
@@ -43,8 +44,32 @@ const addOwnDrink = async (req, res) => {
   res.status(201).json(result);
 };
 
+const removeOwnDrink = async (req, res) => {
+  const { id } = req.params;
+  const { _id: currentUser } = req.user;
+
+  const drinkToDelete = await Recipe.findOne({ _id: id });
+
+  if (!drinkToDelete) {
+    throw requestError(404, "Not found");
+  }
+
+  if (drinkToDelete.owner.toString() !== currentUser.toString()) {
+    return res.status(403).json({
+      message: "You are not allowed to delete this drink",
+    });
+  }
+
+  await Recipe.findByIdAndDelete(id);
+
+  res.status(200).json({
+    message: "Drink deleted successfully",
+  });
+};
+
 module.exports = {
   getAllDrinks: ctrlWrapper(getAllDrinks),
   getDrinkById: ctrlWrapper(getDrinkById),
   addOwnDrink: ctrlWrapper(addOwnDrink),
+  removeOwnDrink: ctrlWrapper(removeOwnDrink),
 };

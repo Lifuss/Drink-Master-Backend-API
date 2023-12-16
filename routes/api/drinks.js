@@ -13,7 +13,7 @@ router.get("/search");
 
 router.get("/own");
 router.post("/own/add", authentication, ctrl.addOwnDrink);
-router.delete("/own/remove");
+router.delete("/own/remove/:id", authentication, ctrl.removeOwnDrink);
 
 router.get("/favorite");
 router.post("/favorite/add");
