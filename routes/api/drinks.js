@@ -8,12 +8,13 @@ const authentication = require("../../middlewares/authentication");
 
 router.get("/mainpage", authentication, ctrl.getAllDrinks);
 router.get("/popular");
-router.get("/:id", authentication, ctrl.getDrinkById);
 router.get("/search");
 
-router.get("/own");
+router.get("/own", authentication, ctrl.getOwnDrinks);
 router.post("/own/add", authentication, ctrl.addOwnDrink);
-router.delete("/own/remove");
+router.delete("/own/remove/:id", authentication, ctrl.removeOwnDrink);
+
+router.get("/:id", authentication, ctrl.getDrinkById);
 
 router.get("/favorite");
 router.post("/favorite/add");
