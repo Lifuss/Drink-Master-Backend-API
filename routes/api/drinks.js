@@ -8,7 +8,7 @@ const authentication = require("../../middlewares/authentication");
 
 router.get("/mainpage", authentication, ctrl.getAllDrinks);
 router.get("/popular");
-router.get("/search");
+router.get("/search", authentication, ctrl.getSearchDrinks);
 
 router.get("/own", authentication, ctrl.getOwnDrinks);
 router.post("/own/add", authentication, ctrl.addOwnDrink);
