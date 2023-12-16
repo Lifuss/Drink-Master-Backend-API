@@ -1,7 +1,7 @@
 const current = async (req, res, next) => {
-  const { email, subscription } = req.user;
+  const { name, email, isAdult, avatarURL, token } = req.user;
 
-  res.json({ email, subscription });
+  res.json({ name, email, isAdult, avatarURL, token });
 };
 
 module.exports = current;
