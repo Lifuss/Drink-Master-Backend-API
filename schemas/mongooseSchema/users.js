@@ -18,15 +18,21 @@ const userSchema = Schema(
     },
     date: {
       type: String,
-      require: true,
+      required: true,
     },
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "recipe",
+      },
+    ],
     verify: {
       type: Boolean,
       default: false,
     },
     verifyToken: {
       type: String,
-      require: true,
+      required: true,
     },
     token: String,
     avatarURL: String,
