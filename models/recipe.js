@@ -149,6 +149,7 @@ const addDrinkSchema = Joi.object({
     measure: Joi.string(),
   }),
   instructions: Joi.string(),
+  owner: Joi.string(),
 });
 
 const schemas = {

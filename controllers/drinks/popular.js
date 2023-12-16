@@ -11,19 +11,19 @@ const getPopularDrinks = async (req, res) => {
 
   const result = await Recipe.aggregate([
     { $match: filter },
-    { $addFields: { numFavorites: { $size: "$users" } } },
-    { $sort: { numFavorites: -1 } },
-    { $limit: 10 },
     {
-      $lookup: {
-        from: "users",
-        localField: "owner",
-        foreignField: "_id",
-        as: "owner",
+      $addFields: {
+        numFavorites: {
+          $cond: {
+            if: { $isArray: "$users" },
+            then: { $size: "$users" },
+            else: 0,
+          },
+        },
       },
     },
-    { $unwind: "$owner" },
-    { $project: { "owner.password": 0 } },
+    { $sort: { numFavorites: -1 } },
+    { $limit: 4 },
   ]);
 
   res.json(result);
