@@ -1,3 +1,4 @@
+const { get } = require("mongoose");
 const { Recipe } = require("../../models/recipe");
 
 const { ctrlWrapper, requestError } = require("../../services");
@@ -30,6 +31,45 @@ const getDrinkById = async (req, res) => {
     throw requestError(404, "Not found");
   }
   res.status(200).json(result);
+};
+
+const getSearchDrinks = async (req, res) => {
+  const { drink, category, ingredients, page = 1, limit = 12 } = req.query;
+  const skip = (page - 1) * limit;
+
+  const { isAdult } = req.user;
+  const filter = {};
+
+  if (!isAdult) {
+    filter.alcoholic = "Non alcoholic";
+  }
+
+  if (drink) {
+    // регулярний вираз для пошуку за частковою або неправильною назвою
+    filter.drink = { $regex: new RegExp(drink, "i") };
+  }
+
+  if (category) {
+    filter.category = category;
+  }
+
+  if (ingredients) {
+    // ?ingredients=Prosecco,Campari => коктейлі, до яких входять Prosecco та/або Campari
+    const ingredientsArray = ingredients.split(",");
+    // пошук коктейлів, в яких значення поля ingredients.title збігається з будь-яким значенням з масиву ingredientsArray, хоча б з одним ($in)
+    filter["ingredients.title"] = { $in: ingredientsArray };
+  }
+
+  const result = await Recipe.find(filter, "-createdAt -updatedAt", {
+    skip,
+    limit,
+  }).populate("owner", "name email");
+
+  if (result.length === 0) {
+    throw requestError(404, "Not found");
+  }
+
+  res.json(result);
 };
 
 const getOwnDrinks = async (req, res) => {
@@ -82,6 +122,7 @@ const removeOwnDrink = async (req, res) => {
 module.exports = {
   getAllDrinks: ctrlWrapper(getAllDrinks),
   getDrinkById: ctrlWrapper(getDrinkById),
+  getSearchDrinks: ctrlWrapper(getSearchDrinks),
   getOwnDrinks: ctrlWrapper(getOwnDrinks),
   addOwnDrink: ctrlWrapper(addOwnDrink),
   removeOwnDrink: ctrlWrapper(removeOwnDrink),
