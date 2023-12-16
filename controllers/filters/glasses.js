@@ -1,8 +1,8 @@
-const Glasses = require("../../models/glasses");
+const Filters = require("../../models/filters");
 
 const listGlasses = async (req, res) => {
   try {
-    const glasses = await Glasses.find();
+    const glasses = await Filters.find({ glasses: { $exists: true } });
     res.json({
       glasses,
     });
