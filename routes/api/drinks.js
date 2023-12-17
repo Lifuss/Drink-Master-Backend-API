@@ -12,7 +12,7 @@ const router = express.Router();
 const ctrl = require("../../controllers/drinks/drinks");
 const authentication = require("../../middlewares/authentication");
 
-router.get("/mainpage", authentication, ctrl.getAllDrinks);
+router.get("/mainpage", authentication, ctrl.getMainPage);
 router.get("/popular", authentication, getPopularDrinks);
 router.get("/search", authentication, ctrl.getSearchDrinks);
 

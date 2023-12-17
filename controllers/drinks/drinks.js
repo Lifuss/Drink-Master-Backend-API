@@ -1,10 +1,9 @@
-const { get } = require("mongoose");
 const { Recipe } = require("../../models/recipe");
 
 const { ctrlWrapper, requestError } = require("../../services");
 
-const getAllDrinks = async (req, res) => {
-  const { page = 1, limit = 12 } = req.query;
+const getMainPage = async (req, res) => {
+  const { page = 1, limit = 3 } = req.query;
   const skip = (page - 1) * limit;
 
   const { isAdult } = req.user;
@@ -14,11 +13,23 @@ const getAllDrinks = async (req, res) => {
     filter = { alcoholic: "Non alcoholic" };
   }
 
-  const result = await Recipe.find(filter, "-createdAt -updatedAt", {
-    skip,
-    limit,
-  }).populate("owner", "name email");
-  res.json(result);
+  const categories = ["Ordinary Drink", "Cocktail", "Shake", "Other/Unknow"];
+  const results = [];
+
+  for (const category of categories) {
+    const result = await Recipe.find({ ...filter, category })
+      .sort({
+        createdAt: -1,
+      })
+      .skip(skip)
+      .limit(limit)
+      .populate("owner", "name email");
+
+    results.push({ category, drinks: result });
+  }
+
+  res.json(results);
+  // results => [{category: "", drinks: [{}, {}, {}]}, {category: "", drinks: [{}, {}, {}]}]
 };
 
 const getDrinkById = async (req, res) => {
@@ -120,7 +131,7 @@ const removeOwnDrink = async (req, res) => {
 };
 
 module.exports = {
-  getAllDrinks: ctrlWrapper(getAllDrinks),
+  getMainPage: ctrlWrapper(getMainPage),
   getDrinkById: ctrlWrapper(getDrinkById),
   getSearchDrinks: ctrlWrapper(getSearchDrinks),
   getOwnDrinks: ctrlWrapper(getOwnDrinks),
