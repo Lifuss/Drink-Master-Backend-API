@@ -36,8 +36,6 @@ const register = async (req, res, next) => {
     user: {
       name: result.name,
       email: result.email,
-      subscription: result.subscription,
-      avatar: result.avatarURL,
       isAdult: result.isAdult,
     },
   });
