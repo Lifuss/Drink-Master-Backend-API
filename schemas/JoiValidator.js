@@ -28,9 +28,16 @@ const schemaUpdate = Joi.object({
   password: Joi.string(),
 });
 
+const schemaSubscribe = Joi.object({
+  email: Joi.string()
+    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "ua"] } })
+    .required(),
+});
+
 module.exports = {
   schemaPut,
   schemaRegister,
   schemaLogin,
   schemaUpdate,
+  schemaSubscribe,
 };

@@ -1,5 +1,5 @@
 const { Recipe } = require("../../models/recipe");
-const User = require("../../models/user");
+const { User } = require("../../models/user");
 const { requestError, ctrlWrapper } = require("../../services");
 
 const getFav = async (req, res) => {
