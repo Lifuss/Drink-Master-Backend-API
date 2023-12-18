@@ -87,24 +87,6 @@ const recipeSchema = new Schema(
     instructions: {
       type: String,
     },
-    instructionsES: {
-      type: String,
-    },
-    instructionsDE: {
-      type: String,
-    },
-    instructionsFR: {
-      type: String,
-    },
-    instructionsIT: {
-      type: String,
-    },
-    instructionsRU: {
-      type: String,
-    },
-    instructionsPL: {
-      type: String,
-    },
     instructionsUK: {
       type: String,
     },
