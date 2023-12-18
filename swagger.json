@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3002"
+      "url": "https://shaking-code-api-lifuss.onrender.com"
     }
   ],
   "tags": [
@@ -111,7 +111,6 @@
       "post": {
         "tags": ["Auth"],
         "summary": "Login user",
-        "description": "Login user",
         "operationId": "signin",
         "requestBody": {
           "content": {
@@ -139,6 +138,34 @@
           },
           "401": {
             "description": "Email or password is wrong"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Logout user",
+        "operationId": "logout",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/logoutRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Bad request"
           },
           "404": {
             "description": "Not found"
@@ -311,6 +338,10 @@
       "signInResponse": {
         "type": "object",
         "properties": {
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODAxOTRiMzI1OGEzY2ZkZDZiYmM1MCIsImlhdCI6MTcwMjkwOTQ4NywiZXhwIjoxNzAyOTk1ODg3fQ.nQGK-Wi6g2urHiMxWlyOc3XRVMF4RC2x2ltisvgUV_U"
+          },
           "user": {
             "type": "object",
             "properties": {
@@ -327,10 +358,6 @@
                 "example": "//www.gravatar.com/avatar/9cb6454d2428a2d6a6b15994fdbfa4e4"
               }
             }
-          },
-          "token": {
-            "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
           }
         }
       },
@@ -353,6 +380,15 @@
                 "example": "false"
               }
             }
+          }
+        }
+      },
+      "logoutRequest": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "5f9f8b4b1c9d440000d3b3b5"
           }
         }
       }
