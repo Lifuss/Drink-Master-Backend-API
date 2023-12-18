@@ -28,9 +28,14 @@ const schemaUpdate = Joi.object({
   password: Joi.string(),
 });
 
+const schemaFavoriteId = Joi.object({
+  cocktailId: Joi.string().hex().length(24).required(),
+});
+
 module.exports = {
   schemaPut,
   schemaRegister,
   schemaLogin,
   schemaUpdate,
+  schemaFavoriteId,
 };
