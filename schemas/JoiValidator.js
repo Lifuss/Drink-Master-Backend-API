@@ -30,6 +30,10 @@ const schemaUpdate = Joi.object({
   password: Joi.string(),
 });
 
+
+const schemaFavoriteId = Joi.object({
+  cocktailId: Joi.string().hex().length(24).required(),
+=======
 const addDrinkSchema = Joi.object({
   drink: Joi.string().required(),
   description: Joi.string().required(),
@@ -48,6 +52,7 @@ const addDrinkSchema = Joi.object({
   ),
   instructions: Joi.string(),
   owner: Joi.string(),
+
 });
 
 module.exports = {
@@ -55,5 +60,6 @@ module.exports = {
   schemaRegister,
   schemaLogin,
   schemaUpdate,
+  schemaFavoriteId,
   addDrinkSchema,
 };

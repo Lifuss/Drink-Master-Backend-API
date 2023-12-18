@@ -1,16 +1,14 @@
 const express = require("express");
-const {
-  getFav,
-  addFaV,
-  removeFav,
-} = require("../../controllers/drinks/favorites");
 const { getPopularDrinks } = require("../../controllers/drinks/index");
 const validateBody = require("../../middlewares/validateBody");
+const schema = require("../../schemas/JoiValidator");
 const upload = require("../../middlewares/upload");
 
 const router = express.Router();
 
+const fav = require("../../controllers/drinks/favorite/index");
 const ctrl = require("../../controllers/drinks");
+
 const authentication = require("../../middlewares/authentication");
 const { addDrinkSchema } = require("../../schemas/JoiValidator");
 
@@ -37,9 +35,19 @@ router.post(
 );
 router.delete("/own/remove/:id", authentication, ctrl.removeOwnDrink);
 
-router.get("/favorite", authentication, getFav);
-router.post("/favorite/add", authentication, addFaV);
-router.delete("/favorite/remove", authentication, removeFav);
+router.get("/favorite", authentication, fav.getFav);
+router.post(
+  "/favorite/add",
+  authentication,
+  validateBody(schema.schemaFavoriteId),
+  fav.addFav
+);
+router.delete(
+  "/favorite/remove",
+  authentication,
+  validateBody(schema.schemaFavoriteId),
+  fav.removeFav
+);
 
 router.get("/:id", authentication, ctrl.getDrinkById);
 
