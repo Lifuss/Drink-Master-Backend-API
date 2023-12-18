@@ -1,0 +1,368 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Shaking Code Web API - OpenAPI 5.0",
+    "description": "API для веб застосунку \"Code Shaking\", яка являє собою збірник рецептів котейлів з аутенфікацією, з можливістю додвавання в обрані та свторювання нових коктейлів",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "arsen.hryh@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3002"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "authentication"
+    },
+    {
+      "name": "Users",
+      "description": "access to update profile and avatars"
+    },
+    {
+      "name": "Filters",
+      "description": "categories, glasses and ingridients"
+    },
+    {
+      "name": "Drinks",
+      "description": "all about cocktails"
+    }
+  ],
+  "paths": {
+    "/api/mainpage": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Get random coctails by 4 categories",
+        "description": "get coctails 12 random cocktails sorted by 4 categories",
+        "operationId": "mainpage",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Drink"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Create user",
+        "description": "Create user",
+        "operationId": "signup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/signUpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Email in use"
+          }
+        }
+      }
+    },
+    "/api/auth/signin": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user",
+        "description": "Login user",
+        "operationId": "signin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/signInRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/signInResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Email or password is wrong"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Drink": {
+        "required": [
+          "drink",
+          "description",
+          "instructions",
+          "drinkThumb",
+          "shortDescription",
+          "glass",
+          "ingredients",
+          "categories",
+          "alcoholic",
+          "tags"
+        ],
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+
+            "example": "639b6de9ff77d221f190c520"
+          },
+          "drink": {
+            "type": "string",
+            "example": "Quentin"
+          },
+          "drinkAlternate": {
+            "type": "string",
+            "example": "Sorry, not specified"
+          },
+          "tags": {
+            "type": "string",
+            "example": "shot, Alcoholic"
+          },
+          "video": {
+            "type": "string",
+            "example": "https://www.youtube.com/watch?v=1qYz7r7G6sI"
+          },
+          "category": {
+            "type": "string",
+            "example": "Ordinary Drink"
+          },
+          "IBA": {
+            "type": "string",
+            "example": "Contemporary Classics"
+          },
+          "alcoholic": {
+            "type": "string",
+            "example": "Alcoholic"
+          },
+          "glass": {
+            "type": "string",
+            "example": "Highball glass"
+          },
+          "description": {
+            "type": "string",
+            "example": "Quentin is a refreshing cocktail that combines the flavors of citrus and mint. It is made with fresh lime juice, orange liqueur, and a touch of mint syrup. The drink is served over ice and garnished with a sprig of mint. It is the perfect beverage for a hot summer day."
+          },
+          "instructions": {
+            "type": "string",
+            "example": "Pour all ingredients directly into highball glass filled with ice. Stir gently. Garnish. Add a dash of Angostura bitters."
+          },
+          "drinkThumb": {
+            "type": "string",
+            "example": "https://ftp.goit.study/img/drinkify/recipes/Quentin.jpg"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5f9f8b4b1c9d440000d3b3b5"
+            }
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ingredient": {
+                  "type": "string",
+                  "example": "Gin"
+                },
+                "measure": {
+                  "type": "string",
+                  "example": "2 oz"
+                }
+              }
+            }
+          },
+          "shortDescription": {
+            "type": "string",
+            "example": "A refreshing and citrusy cocktail with a hint of mint"
+          }
+        }
+      },
+      "User": {
+        "required": ["email", "password", "name", "date"],
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "5f9f8b4b1c9d440000d3b3b5"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          },
+          "name": {
+            "type": "string",
+            "example": "John"
+          },
+          "date": {
+            "type": "string",
+            "example": "2020-11-20"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "example": "//www.gravatar.com/avatar/9cb6454d2428a2d6a6b15994fdbfa4e4"
+          }
+        }
+      },
+      "signUpRequest": {
+        "required": ["email", "password", "name", "date"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          },
+          "name": {
+            "type": "string",
+            "example": "John"
+          },
+          "date": {
+            "type": "string",
+            "example": "2020-11-20"
+          }
+        }
+      },
+      "signInRequest": {
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          }
+        }
+      },
+      "signInResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "John"
+              },
+              "isAdult": {
+                "type": "boolean",
+                "example": "false"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "example": "//www.gravatar.com/avatar/9cb6454d2428a2d6a6b15994fdbfa4e4"
+              }
+            }
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "name": {
+                "type": "string",
+                "example": "John"
+              },
+              "isAdult": {
+                "type": "boolean",
+                "example": "false"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
