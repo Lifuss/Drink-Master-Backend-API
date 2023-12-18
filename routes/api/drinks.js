@@ -6,6 +6,7 @@ const {
 } = require("../../controllers/drinks/favorites");
 const { getPopularDrinks } = require("../../controllers/drinks/index");
 const validateBody = require("../../middlewares/validateBody");
+const upload = require("../../middlewares/upload");
 
 const router = express.Router();
 
@@ -21,6 +22,16 @@ router.get("/own", authentication, ctrl.getOwnDrinks);
 router.post(
   "/own/add",
   authentication,
+  upload.fields([
+    { name: "drink" },
+    { name: "description" },
+    { name: "category" },
+    { name: "glass" },
+    { name: "alcoholic" },
+    { name: "ingredients" },
+    { name: "instructions" },
+    { name: "drinkImage" },
+  ]),
   validateBody(addDrinkSchema),
   ctrl.addOwnDrink
 );
