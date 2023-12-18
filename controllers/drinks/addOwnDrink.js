@@ -15,5 +15,3 @@ const addOwnDrink = async (req, res) => {
 };
 
 module.exports = addOwnDrink;
-
-//6580160cf3b507fe76000198

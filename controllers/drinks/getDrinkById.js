@@ -6,7 +6,7 @@ const getDrinkById = async (req, res) => {
   const { id } = req.params;
   const { isAdult } = req.user;
 
-  const result = await Recipe.findById(id);
+  const result = await Recipe.findById(id).populate("owner", "name email");
 
   if (!result || (!isAdult && result.alcoholic === "Alcoholic")) {
     throw requestError(404, "Not found");

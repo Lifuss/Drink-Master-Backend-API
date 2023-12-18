@@ -32,7 +32,7 @@ const getSearchDrinks = async (req, res) => {
   const result = await Recipe.find(filter, "-createdAt -updatedAt", {
     skip,
     limit,
-  });
+  }).populate("owner", "name email");
 
   if (result.length === 0) {
     throw requestError(404, "Not found");

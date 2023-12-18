@@ -8,7 +8,7 @@ const getOwnDrinks = async (req, res) => {
   const result = await Recipe.find(filter, "-createdAt -updatedAt", {
     skip,
     limit,
-  });
+  }).populate("owner", "name email");
   res.json(result);
 };
 

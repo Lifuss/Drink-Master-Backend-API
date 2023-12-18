@@ -16,6 +16,7 @@ const getMainPage = async (req, res) => {
 
   for (const category of categories) {
     const result = await Recipe.find({ ...filter, category })
+      .populate("owner", "name owner")
       .sort({
         createdAt: -1,
       })
