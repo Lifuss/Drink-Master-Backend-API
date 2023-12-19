@@ -29,7 +29,7 @@ const update = async (req, res, next) => {
     isAdult = true;
   }
 
-  let avatarThumb = "";
+  let avatarThumb = req.user.avatarUrl;
 
   if (req.file) {
     const { path: oldPath } = req.file;
