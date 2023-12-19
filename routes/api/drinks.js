@@ -17,22 +17,15 @@ router.get("/popular", authentication, getPopularDrinks);
 router.get("/search", authentication, ctrl.getSearchDrinks);
 
 router.get("/own", authentication, ctrl.getOwnDrinks);
+
 router.post(
   "/own/add",
   authentication,
-  upload.fields([
-    { name: "drink" },
-    { name: "description" },
-    { name: "category" },
-    { name: "glass" },
-    { name: "alcoholic" },
-    { name: "ingredients" },
-    { name: "instructions" },
-    { name: "drinkImage" },
-  ]),
+  upload.single("drinkThumb"),
   validateBody(addDrinkSchema),
   ctrl.addOwnDrink
 );
+
 router.delete("/own/remove/:id", authentication, ctrl.removeOwnDrink);
 
 router.get("/favorite", authentication, fav.getFav);

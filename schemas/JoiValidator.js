@@ -50,13 +50,16 @@ const addDrinkSchema = Joi.object({
     .valid(...glassTypes)
     .required(),
   alcoholic: Joi.string().valid("Alcoholic", "Non alcoholic"),
-  ingredients: Joi.array().items(
-    Joi.object({
-      title: Joi.string(),
-      measure: Joi.string(),
-    }).required()
-  ),
+  ingredients: Joi.array()
+    .items(
+      Joi.object({
+        title: Joi.string(),
+        measure: Joi.string(),
+      }).required()
+    )
+    .required(),
   instructions: Joi.string(),
+  drinkThumb: Joi.string(),
   owner: Joi.string(),
 });
 
