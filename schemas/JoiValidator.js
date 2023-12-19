@@ -28,6 +28,7 @@ const schemaUpdate = Joi.object({
     tlds: { allow: ["com", "net", "ua"] },
   }),
   password: Joi.string(),
+  avatarURL: Joi.string(),
 });
 
 const schemaSubscribe = Joi.object({
