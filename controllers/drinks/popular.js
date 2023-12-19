@@ -22,6 +22,18 @@ const getPopularDrinks = async (req, res) => {
         },
       },
     },
+    {
+      $project: {
+        users: 0,
+        instructionsES: 0,
+        instructionsDE: 0,
+        instructionsFR: 0,
+        instructionsIT: 0,
+        instructionsPL: 0,
+        instructionsRU: 0,
+        instructionsUK: 0,
+      },
+    },
     { $sort: { numFavorites: -1 } },
     { $limit: 4 },
   ]);

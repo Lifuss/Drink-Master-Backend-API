@@ -20,9 +20,7 @@ const removeOwnDrink = async (req, res) => {
 
   await Recipe.findByIdAndDelete(id);
 
-  res.status(200).json({
-    message: "Drink deleted successfully",
-  });
+  res.status(204).end();
 };
 
 module.exports = removeOwnDrink;

@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://shaking-code-api-lifuss.onrender.com"
+      "url": "https://shaking-code-api-lifuss.onrender.com/api"
     }
   ],
   "tags": [
@@ -33,7 +33,43 @@
     }
   ],
   "paths": {
-    "/api/drinks/mainpage": {
+    "/drinks/": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Get cocktail by id",
+        "operationId": "getDrinkById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "cocktail id",
+            "example": "5f9f8b4b1c9d440000d3b3b5"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrinkItem"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/drinks/mainpage": {
       "get": {
         "tags": ["Drinks"],
         "summary": "Get newest 12 cocktails by 4 categories",
@@ -67,7 +103,7 @@
         ]
       }
     },
-    "/api/auth/signup": {
+    "/auth/signup": {
       "post": {
         "tags": ["Auth"],
         "summary": "Create user",
@@ -106,7 +142,7 @@
         }
       }
     },
-    "/api/auth/signin": {
+    "/auth/signin": {
       "post": {
         "tags": ["Auth"],
         "summary": "Login user",
@@ -144,7 +180,7 @@
         }
       }
     },
-    "/api/auth/logout": {
+    "/auth/logout": {
       "get": {
         "tags": ["Auth"],
         "summary": "Logout user",
@@ -177,7 +213,7 @@
         ]
       }
     },
-    "/api/users/current": {
+    "/users/current": {
       "get": {
         "tags": ["Users"],
         "summary": "Refresh user token",
@@ -207,7 +243,7 @@
         ]
       }
     },
-    "/api/users/update": {
+    "/users/update": {
       "patch": {
         "tags": ["Users"],
         "summary": "Update user",
@@ -250,7 +286,7 @@
         ]
       }
     },
-    "/api/users/subscribe": {
+    "/users/subscribe": {
       "post": {
         "tags": ["Users"],
         "summary": "Subscribe email to newsletter",
@@ -280,7 +316,7 @@
         ]
       }
     },
-    "/api/filters/categories": {
+    "/filters/categories": {
       "get": {
         "tags": ["Filters"],
         "summary": "Get all categories",
@@ -319,7 +355,7 @@
         ]
       }
     },
-    "/api/filters/ingredients": {
+    "/filters/ingredients": {
       "get": {
         "tags": ["Filters"],
         "summary": "Get all ingredients",
@@ -357,7 +393,7 @@
         ]
       }
     },
-    "/api/filters/glasses": {
+    "/filters/glasses": {
       "get": {
         "tags": ["Filters"],
         "summary": "Get all glasses",
@@ -387,6 +423,380 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/drinks/popular": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Get 4 the most popular cocktails",
+        "operationId": "popular",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DrinkItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/drinks/search": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Search cocktails by name",
+        "description": "If user is not adult, he can't see alcoholic drinks, there are not required parameters",
+        "operationId": "search",
+        "parameters": [
+          {
+            "name": "drink",
+            "in": "query",
+            "description": "drink name",
+            "schema": {
+              "type": "string",
+              "example": "Quentin"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "category name",
+            "schema": {
+              "type": "string",
+              "example": "Ordinary Drink"
+            }
+          },
+          {
+            "name": "ingredients",
+            "in": "query",
+            "description": "ingredients name(can be more than one separated by comma)",
+            "schema": {
+              "type": "string",
+              "example": "Gin"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "schema": {
+              "type": "string",
+              "example": "1",
+              "default": "1"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit of drinks per page",
+            "schema": {
+              "type": "string",
+              "example": "12",
+              "default": "12"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DrinkItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/drinks/own": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Get user's own cocktails",
+        "operationId": "own",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "schema": {
+              "type": "string",
+              "example": "1",
+              "default": "1"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit of drinks per page",
+            "schema": {
+              "type": "string",
+              "example": "12",
+              "default": "12"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DrinkItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/drinks/own/add": {
+      "post": {
+        "tags": ["Drinks"],
+        "summary": "Add new cocktail",
+        "operationId": "add",
+        "requestBody": {
+          "content": {
+            "multipart/formData": {
+              "schema": {
+                "$ref": "#/components/schemas/AddDrink"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DrinkItem"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Non-adult cannot add alcoholic drinks"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/drinks/own/remove/": {
+      "delete": {
+        "tags": ["Drinks"],
+        "summary": "Remove cocktail",
+        "operationId": "remove",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "cocktail id",
+            "schema": {
+              "type": "string",
+              "example": "5f9f8b4b1c9d440000d3b3b5"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "You are not allowed to delete this drink"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/drinks/favorite": {
+      "get": {
+        "tags": ["Drinks"],
+        "summary": "Get user's favorite cocktails",
+        "operationId": "favorite",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DrinkItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/drinks/favorite/add": {
+      "post": {
+        "tags": ["Drinks"],
+        "summary": "Add cocktail to favorites",
+        "operationId": "addFavorite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cocktailId": {
+                    "type": "string",
+                    "example": "5f9f8b4b1c9d440000d3b3b5"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful added"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/drinks/favorite/remove": {
+      "delete": {
+        "tags": ["Drinks"],
+        "summary": "Remove cocktail from favorites",
+        "operationId": "removeFavorite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cocktailId": {
+                    "type": "string",
+                    "example": "5f9f8b4b1c9d440000d3b3b5"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "successful removed"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
           }
         },
         "security": [
@@ -506,6 +916,19 @@
           "shortDescription": {
             "type": "string",
             "example": "A refreshing and citrusy cocktail with a hint of mint"
+          },
+          "owner": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "John"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              }
+            }
           }
         }
       },
@@ -682,8 +1105,84 @@
             "example": "United Kingdom"
           }
         }
+      },
+      "AddDrink": {
+        "type": "object",
+        "required": [
+          "drink",
+          "category",
+          "alcoholic",
+          "glass",
+          "description",
+          "instructions",
+          "drinkThumb",
+          "ingredients"
+        ],
+        "properties": {
+          "drink": {
+            "type": "string",
+            "example": "Quentin"
+          },
+          "drinkAlternate": {
+            "type": "string",
+            "example": "Sorry, not specified"
+          },
+          "tags": {
+            "type": "string",
+            "example": "shot, Alcoholic"
+          },
+          "video": {
+            "type": "string",
+            "example": "https://www.youtube.com/watch?v=1qYz7r7G6sI"
+          },
+          "category": {
+            "type": "string",
+            "example": "Ordinary Drink"
+          },
+          "IBA": {
+            "type": "string",
+            "example": "Contemporary Classics"
+          },
+          "alcoholic": {
+            "type": "string",
+            "example": "Alcoholic"
+          },
+          "glass": {
+            "type": "string",
+            "example": "Highball glass"
+          },
+          "description": {
+            "type": "string",
+            "example": "Quentin is a refreshing cocktail that combines the flavors of citrus and mint. It is made with fresh lime juice, orange liqueur, and a touch of mint syrup. The drink is served over ice and garnished with a sprig of mint. It is the perfect beverage for a hot summer day."
+          },
+          "instructions": {
+            "type": "string",
+            "example": "Pour all ingredients directly into highball glass filled with ice. Stir gently. Garnish. Add a dash of Angostura bitters."
+          },
+          "drinkThumb": {
+            "type": "file",
+            "example": "https://ftp.goit.study/img/drinkify/recipes/Quentin.jpg"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ingredient": {
+                  "type": "string",
+                  "example": "Gin"
+                },
+                "measure": {
+                  "type": "string",
+                  "example": "2cl"
+                }
+              }
+            }
+          }
+        }
       }
     },
+
     "securitySchemes": {
       "Bearer": {
         "type": "http",

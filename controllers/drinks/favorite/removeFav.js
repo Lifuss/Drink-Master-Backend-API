@@ -23,7 +23,7 @@ const removeFav = async (req, res) => {
     },
     { new: true }
   );
-  res.json(updatedUser);
+  res.status(204).end();
 };
 
 module.exports = removeFav;
