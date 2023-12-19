@@ -1,4 +1,6 @@
+const cloudinary = require("../../services/cloudinary");
 const { Recipe } = require("../../models/recipe");
+const fs = require("fs/promises");
 
 const addOwnDrink = async (req, res) => {
   const { _id: owner, isAdult } = req.user;
@@ -8,9 +10,25 @@ const addOwnDrink = async (req, res) => {
       message: "Non-adult cannot add alcoholic drinks",
     });
   }
-  const result = await Recipe.create({ ...req.body, owner });
-  console.log(result);
-  console.log(req.body);
+
+  let drinkThumb =
+    "https://res.cloudinary.com/djpikgsv1/image/upload/v1702944415/OwnDrinksImages/defaultDrinkImage_lbvskn.png";
+
+  if (req.file) {
+    const { path: oldPath } = req.file;
+
+    const { url: drinkUrl } = await cloudinary.uploader.upload(oldPath, {
+      folder: "OwnDrinksImages",
+      transformation: [{ width: 400, height: 400, crop: "fill" }],
+    });
+
+    drinkThumb = drinkUrl;
+
+    await fs.unlink(oldPath);
+  }
+
+  const result = await Recipe.create({ ...req.body, owner, drinkThumb });
+
   res.status(201).json(result);
 };
 

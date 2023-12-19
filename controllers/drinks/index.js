@@ -7,6 +7,7 @@ const getOwnDrinks = require("./getOwnDrinks");
 const addOwnDrink = require("./addOwnDrink");
 const removeOwnDrink = require("./removeOwnDrink");
 const getPopularDrinks = require("./popular");
+
 module.exports = {
   getMainPage: ctrlWrapper(getMainPage),
   getDrinkById: ctrlWrapper(getDrinkById),
