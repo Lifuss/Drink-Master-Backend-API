@@ -1,5 +1,9 @@
 const { sendEmail } = require("../../services");
-const { BASE_URL } = process.env;
+
+const fs = require("fs");
+const path = require("path");
+const letterPath = path.join(__dirname, "../../letter.html");
+const letter = fs.readFileSync(letterPath, "utf8");
 
 const subscribeEmail = async (req, res) => {
   const { email } = req.body;
@@ -7,7 +11,7 @@ const subscribeEmail = async (req, res) => {
   const mail = {
     to: email,
     subject: "Subscribe",
-    html: `<a target="_blank" href="${BASE_URL}/api/auth/signup">You have subscribed to the drink Master service</a>`,
+    html: letter,
   };
   await sendEmail(mail);
 
