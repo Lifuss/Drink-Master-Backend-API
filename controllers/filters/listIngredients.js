@@ -1,13 +1,12 @@
 const Ingredients = require("../../models/ingredients");
 
 const listIngredients = async (req, res) => {
-  try {
+  if (!req.user.isAdult) {
+    const ingredients = await Ingredients.find({ alcohol: "No" });
+    return res.json(ingredients);
+  } else {
     const ingredients = await Ingredients.find();
-    res.json({
-      ingredients,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.json(ingredients);
   }
 };
 

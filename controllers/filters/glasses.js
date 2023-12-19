@@ -1,12 +1,8 @@
 const Filters = require("../../models/filters");
 
 const listGlasses = async (req, res) => {
-  try {
-    const glasses = await Filters.find({ glasses: { $exists: true } }, "-_id");
-    res.json(...glasses);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  const glasses = await Filters.find({ glasses: { $exists: true } }, "-_id");
+  res.json(...glasses);
 };
 
 module.exports = listGlasses;

@@ -11,11 +11,18 @@ const getMainPage = async (req, res) => {
     filter = { alcoholic: "Non alcoholic" };
   }
 
-  const categories = ["Ordinary Drink", "Cocktail", "Shake", "Other/Unknow"];
-  const results = [];
+  const drinks = {
+    "Ordinary Drink": [],
+    Cocktail: [],
+    Shake: [],
+    "Other/Unknown": [],
+  };
 
-  for (const category of categories) {
-    const result = await Recipe.find({ ...filter, category })
+  for (const category of Object.keys(drinks)) {
+    const result = await Recipe.find(
+      { ...filter, category },
+      "-instructionsES -instructionsDE -instructionsFR -instructionsIT  -instructionsPL -instructionsRU -instructionsUK"
+    )
       .populate("owner", "name owner")
       .sort({
         createdAt: -1,
@@ -23,11 +30,10 @@ const getMainPage = async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-    results.push({ category, drinks: result });
+    drinks[category] = result;
   }
 
-  res.json(results);
-  // results => [{category: "", drinks: [{}, {}, {}]}, {category: "", drinks: [{}, {}, {}]}]
+  res.json(drinks);
 };
 
 module.exports = getMainPage;

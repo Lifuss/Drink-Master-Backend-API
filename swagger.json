@@ -33,11 +33,10 @@
     }
   ],
   "paths": {
-    "/api/mainpage": {
+    "/api/drinks/mainpage": {
       "get": {
         "tags": ["Drinks"],
-        "summary": "Get random coctails by 4 categories",
-        "description": "get coctails 12 random cocktails sorted by 4 categories",
+        "summary": "Get newest 12 cocktails by 4 categories",
         "operationId": "mainpage",
         "responses": {
           "200": {
@@ -56,8 +55,8 @@
           "400": {
             "description": "Bad request"
           },
-          "404": {
-            "description": "Not found"
+          "401": {
+            "description": "Unauthorized"
           }
         },
 
@@ -170,25 +169,266 @@
           "404": {
             "description": "Not found"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/current": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Refresh user token",
+        "operationId": "current",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/signInResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/update": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user",
+        "operationId": "update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Email in use"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/subscribe": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Subscribe email to newsletter",
+        "operationId": "subscribe",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/subscribeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/filters/categories": {
+      "get": {
+        "tags": ["Filters"],
+        "summary": "Get all categories",
+        "operationId": "categories",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "categories": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "Ordinary Drink"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/filters/ingredients": {
+      "get": {
+        "tags": ["Filters"],
+        "summary": "Get all ingredients",
+        "operationId": "ingredients",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ingredients": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ingredient"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/filters/glasses": {
+      "get": {
+        "tags": ["Filters"],
+        "summary": "Get all glasses",
+        "operationId": "glasses",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "glasses": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "Highball glass"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     }
   },
   "components": {
     "schemas": {
       "Drink": {
-        "required": [
-          "drink",
-          "description",
-          "instructions",
-          "drinkThumb",
-          "shortDescription",
-          "glass",
-          "ingredients",
-          "categories",
-          "alcoholic",
-          "tags"
-        ],
+        "type": "object",
+        "properties": {
+          "Ordinary Drink": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DrinkItem"
+            }
+          },
+          "Cocktail": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DrinkItem"
+            }
+          },
+          "Shake": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DrinkItem"
+            }
+          },
+          "Other/Unknown": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DrinkItem"
+            }
+          }
+        }
+      },
+      "DrinkItem": {
         "type": "object",
         "properties": {
           "_id": {
@@ -270,20 +510,11 @@
         }
       },
       "User": {
-        "required": ["email", "password", "name", "date"],
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string",
-            "example": "5f9f8b4b1c9d440000d3b3b5"
-          },
           "email": {
             "type": "string",
             "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "example": "12345678"
           },
           "name": {
             "type": "string",
@@ -384,11 +615,71 @@
         }
       },
       "logoutRequest": {
+        "required": ["_id"],
         "type": "object",
         "properties": {
           "_id": {
             "type": "string",
             "example": "5f9f8b4b1c9d440000d3b3b5"
+          }
+        }
+      },
+      "subscribeRequest": {
+        "required": ["email"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "ingredient": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "5f9f8b4b1c9d440000d3b3b5"
+          },
+          "title": {
+            "type": "string",
+            "example": "Gin"
+          },
+          "ingredientThumb": {
+            "type": "string",
+            "example": "https://www.thecocktaildb.com/images/ingredients/gin-Small.png"
+          },
+          "thumbMedium": {
+            "type": "string",
+            "example": "https://www.thecocktaildb.com/images/ingredients/gin-Medium.png"
+          },
+          "thumbSmall": {
+            "type": "string",
+            "example": "https://www.thecocktaildb.com/images/ingredients/gin-Small.png"
+          },
+          "abv": {
+            "type": "string",
+            "example": "40"
+          },
+          "alcohol": {
+            "type": "string",
+            "example": "Yes"
+          },
+          "description": {
+            "type": "string",
+            "example": "Gin is a distilled alcoholic drink that derives its predominant flavour from juniper berries (Juniperus communis). Gin is one of the broadest categories of spirits, all of various origins, styles, and flavour profiles, that revolve around juniper as a common ingredient."
+          },
+          "type": {
+            "type": "string",
+            "example": "Sweetener"
+          },
+          "flavour": {
+            "type": "string",
+            "example": "Sweet"
+          },
+          "country": {
+            "type": "string",
+            "example": "United Kingdom"
           }
         }
       }
