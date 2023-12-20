@@ -616,7 +616,7 @@
         "operationId": "add",
         "requestBody": {
           "content": {
-            "multipart/formData": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/AddDrink"
               }
