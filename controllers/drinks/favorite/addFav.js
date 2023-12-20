@@ -10,20 +10,20 @@ const addFav = async (req, res) => {
   if (!cocktail) {
     throw requestError(404, "Wrong ID");
   }
-  const updatedUser = await User.findByIdAndUpdate(
+  await User.findByIdAndUpdate(
     _id,
     { $addToSet: { favorites: cocktailId } },
     { new: true }
   );
 
-  await Recipe.findByIdAndUpdate(
+  const drink = await Recipe.findByIdAndUpdate(
     cocktailId,
     {
       $addToSet: { users: _id },
     },
     { new: true }
   );
-  res.json(updatedUser);
+  res.json(drink);
 };
 
 module.exports = addFav;
