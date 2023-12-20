@@ -1,4 +1,4 @@
-const User = require("../../../models/user");
+const { User } = require("../../../models/user");
 
 const getFav = async (req, res) => {
   const { _id } = req.user;
