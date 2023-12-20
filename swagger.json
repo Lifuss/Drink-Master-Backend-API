@@ -14,6 +14,8 @@
       "url": "https://shaking-code-api-lifuss.onrender.com/api"
     }
   ],
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json"],
   "tags": [
     {
       "name": "Auth",
@@ -612,18 +614,69 @@
     "/drinks/own/add": {
       "post": {
         "tags": ["Drinks"],
+        "consumes": ["multipart/form-data"],
         "summary": "Add new cocktail",
         "operationId": "add",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/AddDrink"
+                "type": "object",
+                "required": [
+                  "drink",
+                  "category",
+                  "alcoholic",
+                  "glass",
+                  "description",
+                  "ingredients[0][title]",
+                  "ingredients[0][measure]"
+                ],
+                "properties": {
+                  "drink": {
+                    "type": "string",
+                    "example": "Quentin"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "Ordinary Drink"
+                  },
+                  "alcoholic": {
+                    "type": "string",
+                    "example": "Alcoholic",
+                    "description": "Alcoholic or Non alcoholic"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "example": "Pour all ingredients directly into highball glass filled with ice. Stir gently. Garnish. Add a dash of Angostura bitters."
+                  },
+                  "glass": {
+                    "type": "string",
+                    "example": "Highball glass"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Quentin is a refreshing cocktail that combines the flavors of citrus and mint. It is made with fresh lime juice, orange liqueur, and a touch of mint syrup. The drink is served over ice and garnished with a sprig of mint. It is the perfect beverage for a hot summer day."
+                  },
+                  "drinkThumb": {
+                    "type": "string",
+                    "description": "Drink image",
+                    "format": "binary"
+                  },
+                  "ingredients[0][title]": {
+                    "type": "string",
+                    "example": "Gin"
+                  },
+                  "ingredients[0][measure]": {
+                    "type": "string",
+                    "example": "2 oz"
+                  }
+                }
               }
             }
           },
           "required": true
         },
+
         "responses": {
           "201": {
             "description": "successful operation",
@@ -1103,81 +1156,6 @@
           "country": {
             "type": "string",
             "example": "United Kingdom"
-          }
-        }
-      },
-      "AddDrink": {
-        "type": "object",
-        "required": [
-          "drink",
-          "category",
-          "alcoholic",
-          "glass",
-          "description",
-          "instructions",
-          "drinkThumb",
-          "ingredients"
-        ],
-        "properties": {
-          "drink": {
-            "type": "string",
-            "example": "Quentin"
-          },
-          "drinkAlternate": {
-            "type": "string",
-            "example": "Sorry, not specified"
-          },
-          "tags": {
-            "type": "string",
-            "example": "shot, Alcoholic"
-          },
-          "video": {
-            "type": "string",
-            "example": "https://www.youtube.com/watch?v=1qYz7r7G6sI"
-          },
-          "category": {
-            "type": "string",
-            "example": "Ordinary Drink"
-          },
-          "IBA": {
-            "type": "string",
-            "example": "Contemporary Classics"
-          },
-          "alcoholic": {
-            "type": "string",
-            "example": "Alcoholic"
-          },
-          "glass": {
-            "type": "string",
-            "example": "Highball glass"
-          },
-          "description": {
-            "type": "string",
-            "example": "Quentin is a refreshing cocktail that combines the flavors of citrus and mint. It is made with fresh lime juice, orange liqueur, and a touch of mint syrup. The drink is served over ice and garnished with a sprig of mint. It is the perfect beverage for a hot summer day."
-          },
-          "instructions": {
-            "type": "string",
-            "example": "Pour all ingredients directly into highball glass filled with ice. Stir gently. Garnish. Add a dash of Angostura bitters."
-          },
-          "drinkThumb": {
-            "type": "file",
-            "example": "https://ftp.goit.study/img/drinkify/recipes/Quentin.jpg"
-          },
-          "ingredients": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "ingredient": {
-                  "type": "string",
-                  "example": "Gin"
-                },
-                "measure": {
-                  "type": "string",
-                  "example": "2cl"
-                }
-              }
-            }
           }
         }
       }
