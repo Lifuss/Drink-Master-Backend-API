@@ -1,6 +1,7 @@
 const { Recipe } = require("../../models/recipe");
-
 const { requestError } = require("../../services");
+const cloudinary = require("../../services/cloudinary");
+const getPublicId = require("../../services/getPublicId");
 
 const removeOwnDrink = async (req, res) => {
   const { id } = req.params;
@@ -16,6 +17,15 @@ const removeOwnDrink = async (req, res) => {
     return res.status(403).json({
       message: "You are not allowed to delete this drink",
     });
+  }
+
+  if (drinkToDelete.drinkThumb) {
+    try {
+      const publicId = getPublicId(drinkToDelete.drinkThumb);
+      await cloudinary.uploader.destroy(publicId);
+    } catch (error) {
+      console.error("Error deleting image from Cloudinary:", error);
+    }
   }
 
   await Recipe.findByIdAndDelete(id);

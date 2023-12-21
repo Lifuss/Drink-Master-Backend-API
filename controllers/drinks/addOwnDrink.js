@@ -17,12 +17,12 @@ const addOwnDrink = async (req, res) => {
   if (req.file) {
     const { path: oldPath } = req.file;
 
-    const { url: drinkUrl } = await cloudinary.uploader.upload(oldPath, {
+    const uploadResult = await cloudinary.uploader.upload(oldPath, {
       folder: "OwnDrinksImages",
       transformation: [{ width: 400, height: 400, crop: "fill" }],
     });
 
-    drinkThumb = drinkUrl;
+    drinkThumb = uploadResult.url;
 
     await fs.unlink(oldPath);
   }
