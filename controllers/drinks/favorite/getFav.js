@@ -3,7 +3,7 @@ const { User } = require("../../../models/user");
 const getFav = async (req, res) => {
   const { page = 1, limit = 9 } = req.query;
   const skip = (page - 1) * limit;
-  console.log(req.query);
+
   const { _id } = req.user;
   const data = await User.findOne({ _id }, "favorites").populate(
     "favorites",
