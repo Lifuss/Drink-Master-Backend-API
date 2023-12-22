@@ -12,10 +12,12 @@
   "servers": [
     {
       "url": "https://shaking-code-api-lifuss.onrender.com/api"
+    },
+    {
+      "url": "http://localhost:3002/api"
     }
   ],
-  "consumes": ["application/json", "multipart/form-data"],
-  "produces": ["application/json"],
+
   "tags": [
     {
       "name": "Auth",
@@ -198,7 +200,7 @@
           "required": true
         },
         "responses": {
-          "204": {
+          "200": {
             "description": "successful operation"
           },
           "400": {
@@ -226,7 +228,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/signInResponse"
+                  "$ref": "#/components/schemas/currentResponse"
                 }
               }
             }
@@ -252,9 +254,20 @@
         "operationId": "update",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "avatarThumb": {
+                    "type": "string",
+                    "description": "User avatar",
+                    "format": "binary"
+                  }
+                }
               }
             }
           },
@@ -266,19 +279,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "John"
+                    },
+                    "avatarThumb": {
+                      "type": "string",
+                      "example": "https://www.gravatar.com/avatar/9cb6454d2428a2d6a6b15994fdbfa4e4"
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
             "description": "Bad request"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "409": {
-            "description": "Email in use"
           }
         },
         "security": [
@@ -1156,6 +1173,36 @@
           "country": {
             "type": "string",
             "example": "United Kingdom"
+          }
+        }
+      },
+      "currentResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODAxOTRiMzI1OGEzY2ZkZDZiYmM1MCIsImlhdCI6MTcwMjkwOTQ4NywiZXhwIjoxNzAyOTk1ODg3fQ.nQGK-Wi6g2urHiMxWlyOc3XRVMF4RC2x2ltisvgUV_U"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "John"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "isAdult": {
+                "type": "boolean",
+                "example": "false"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "example": "//www.gravatar.com/avatar/9cb6454d2428a2d6a6b15994fdbfa4e4"
+              }
+            }
           }
         }
       }
