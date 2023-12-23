@@ -10,11 +10,28 @@ const addFav = async (req, res) => {
   if (!cocktail) {
     throw requestError(404, "Wrong ID");
   }
+
   await User.findByIdAndUpdate(
     _id,
     { $addToSet: { favorites: cocktailId } },
     { new: true }
   );
+
+  const updatedUser = await User.findById(_id);
+
+  const sendFirstFavGreeting =
+    updatedUser.favorites.length === 1 && updatedUser.firstFavDrink === false;
+
+  const sendTenthFavGreeting =
+    updatedUser.favorites.length === 10 && updatedUser.tenthFavDrink === false;
+
+  if (sendTenthFavGreeting) {
+    await User.findByIdAndUpdate(_id, { tenthFavDrink: true });
+  }
+
+  if (sendFirstFavGreeting) {
+    await User.findByIdAndUpdate(_id, { firstFavDrink: true });
+  }
 
   const drink = await Recipe.findByIdAndUpdate(
     cocktailId,
@@ -23,7 +40,8 @@ const addFav = async (req, res) => {
     },
     { new: true }
   );
-  res.json(drink);
+
+  res.json({ drink, sendFirstFavGreeting, sendTenthFavGreeting });
 };
 
 module.exports = addFav;

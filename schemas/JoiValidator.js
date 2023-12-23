@@ -11,6 +11,8 @@ const schemaRegister = Joi.object({
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "ua"] } })
     .required(),
   password: Joi.string().required(),
+  firstFavDrink: Joi.boolean().default(false),
+  tenthFavDrink: Joi.boolean().default(false),
 });
 
 const schemaLogin = Joi.object({
