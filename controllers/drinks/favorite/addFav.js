@@ -11,13 +11,11 @@ const addFav = async (req, res) => {
     throw requestError(404, "Wrong ID");
   }
 
-  await User.findByIdAndUpdate(
+  const updatedUser = await User.findByIdAndUpdate(
     _id,
     { $addToSet: { favorites: cocktailId } },
     { new: true }
   );
-
-  const updatedUser = await User.findById(_id);
 
   const sendFirstFavGreeting =
     updatedUser.favorites.length === 1 && updatedUser.firstFavDrink === false;
