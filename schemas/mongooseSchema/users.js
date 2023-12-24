@@ -26,6 +26,14 @@ const userSchema = Schema(
         ref: "recipe",
       },
     ],
+    firstFavDrink: {
+      type: Boolean,
+      default: false,
+    },
+    tenthFavDrink: {
+      type: Boolean,
+      default: false,
+    },
     verify: {
       type: Boolean,
       default: false,
