@@ -2,9 +2,8 @@ const passport = require("passport");
 const { Strategy } = require("passport-google-oauth2");
 const bcrypt = require("bcryptjs");
 const { nanoid } = require("nanoid");
-const { BASE_URL } = process.env;
 
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, BASE_URL } = process.env;
 
 const { User } = require("../models/user");
 
@@ -15,7 +14,13 @@ const googleParams = {
   passReqToCallback: true,
 };
 
-const googleCallback = async (profile, done) => {
+const googleCallback = async (
+  req,
+  accessToken,
+  refreshToken,
+  profile,
+  done
+) => {
   try {
     const { displayName, picture, email } = profile;
     const user = await User.findOne({ email });
