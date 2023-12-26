@@ -34,6 +34,14 @@ const userSchema = Schema(
       type: Boolean,
       default: false,
     },
+    lastVisit: {
+      type: Date,
+      default: null,
+    },
+    visitCount: {
+      type: Number,
+      default: 0,
+    },
     verify: {
       type: Boolean,
       default: false,
