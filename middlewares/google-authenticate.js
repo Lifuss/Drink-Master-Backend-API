@@ -35,7 +35,7 @@ const googleCallback = async (
       email,
       password,
       name: displayName,
-      photo: picture,
+      avatarURL: picture,
       verifyToken,
       date,
       isAdult: true,
