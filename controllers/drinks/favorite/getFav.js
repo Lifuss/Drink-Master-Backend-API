@@ -9,7 +9,6 @@ const getFav = async (req, res) => {
     "favorites",
     "-instructionsES -instructionsDE -instructionsFR -instructionsIT -instructionsRU -instructionsPL"
   );
-
   res.json({
     favorites: data.favorites.splice(skip, limit),
     total: data.favorites.length + 1,
