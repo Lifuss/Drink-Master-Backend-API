@@ -14,7 +14,6 @@ const getOwnDrinks = async (req, res) => {
 
   const total = result.length;
   const pages = Math.ceil(result.length / limit);
-  console.log(result.length);
 
   res.json({
     cocktails: result.splice(skip, limit),
