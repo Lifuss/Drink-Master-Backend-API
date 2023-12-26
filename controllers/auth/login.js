@@ -2,6 +2,7 @@ const { User } = require("../../models/user");
 const { requestError } = require("../../services");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { updateVisitCount } = require("../../services");
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -13,7 +14,6 @@ const login = async (req, res, next) => {
 
   const passwordCompare = await bcrypt.compare(password, user.password);
 
-  console.log(passwordCompare);
   if (!passwordCompare) {
     throw requestError(401, "Email or password wrong");
   }
@@ -21,11 +21,18 @@ const login = async (req, res, next) => {
   const payload = { id: user._id };
   const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "24h" });
 
-  await User.findByIdAndUpdate(user._id, { token });
+  const userData = await User.findByIdAndUpdate(
+    user._id,
+    { token },
+    { new: true }
+  );
+
+  const dayCount = await updateVisitCount(userData);
 
   res.json({
     token,
     user: { name: user.name, avatar: user.avatarURL, isAdult: user.isAdult },
+    dayCount,
   });
 };
 
