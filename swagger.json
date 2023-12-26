@@ -613,7 +613,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "drinks": {
+                    "cocktails": {
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/DrinkItem"
@@ -815,7 +815,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "drinks": {
+                    "favorites": {
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/DrinkItem"
