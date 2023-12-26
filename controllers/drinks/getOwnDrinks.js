@@ -9,7 +9,11 @@ const getOwnDrinks = async (req, res) => {
     skip,
     limit,
   }).populate("owner", "name email");
-  res.json(result);
+  res.json({
+    cocktails: result.splice(skip, limit),
+    total: result.length + 1,
+    pages: Math.ceil(result.length / limit + 1),
+  });
 };
 
 module.exports = getOwnDrinks;
