@@ -8,27 +8,30 @@ const update = async (req, res, next) => {
 
   let avatarThumb = req.user.avatarURL;
 
-  if (req.file) {
-    const { path: oldPath } = req.file;
+  try {
+    if (req.file) {
+      const { path: oldPath } = req.file;
 
-    if (!req.user.avatarURL.includes("gravatar")) {
-      const oldAvatarPublicId = req.user.avatarURL;
-      const startsWith = oldAvatarPublicId.indexOf("userAvatars/");
-      const publicIdWithExpansion = oldAvatarPublicId.slice(startsWith);
-      const lastDotIndex = publicIdWithExpansion.lastIndexOf(".");
-      const publicId = publicIdWithExpansion.slice(0, lastDotIndex);
+      if (!req.user.avatarURL.includes("gravatar")) {
+        const oldAvatarPublicId = req.user.avatarURL;
+        const startsWith = oldAvatarPublicId.indexOf("userAvatars/");
+        const publicIdWithExpansion = oldAvatarPublicId.slice(startsWith);
+        const lastDotIndex = publicIdWithExpansion.lastIndexOf(".");
+        const publicId = publicIdWithExpansion.slice(0, lastDotIndex);
 
-      await cloudinary.uploader.destroy(publicId);
+        await cloudinary.uploader.destroy(publicId);
+      }
+
+      const upload = await cloudinary.uploader.upload(oldPath, {
+        folder: "userAvatars",
+        transformation: [{ width: 400, height: 400, crop: "fill" }],
+      });
+      const newAvatarUrl = upload.secure_url;
+      avatarThumb = newAvatarUrl;
+      await fs.unlink(oldPath);
     }
-    const upload = await cloudinary.uploader.upload(oldPath, {
-      folder: "userAvatars",
-      transformation: [{ width: 400, height: 400, crop: "fill" }],
-    });
-    const newAvatarUrl = upload.url;
-
-    avatarThumb = newAvatarUrl;
-
-    await fs.unlink(oldPath);
+  } catch (error) {
+    console.error("Error:", error);
   }
 
   const user = await User.findByIdAndUpdate(
