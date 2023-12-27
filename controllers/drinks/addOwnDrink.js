@@ -22,7 +22,7 @@ const addOwnDrink = async (req, res) => {
       transformation: [{ width: 400, height: 400, crop: "fill" }],
     });
 
-    drinkThumb = uploadResult.url;
+    drinkThumb = uploadResult.secure_url;
 
     await fs.unlink(oldPath);
   }

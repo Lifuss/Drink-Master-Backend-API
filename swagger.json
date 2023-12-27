@@ -7,7 +7,7 @@
     "contact": {
       "email": "arsen.hryh@gmail.com"
     },
-    "version": "1.0.0"
+    "version": "1.5.0"
   },
   "servers": [
     {
@@ -540,9 +540,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DrinkItem"
+                  "type": "object",
+                  "properties": {
+                    "drinks": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DrinkItem"
+                      }
+                    },
+                    "total": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "pages": {
+                      "type": "number",
+                      "example": 2
+                    }
                   }
                 }
               }
@@ -598,9 +611,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DrinkItem"
+                  "type": "object",
+                  "properties": {
+                    "cocktails": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DrinkItem"
+                      }
+                    },
+                    "total": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "pages": {
+                      "type": "number",
+                      "example": 2
+                    }
                   }
                 }
               }
@@ -759,15 +785,50 @@
         "tags": ["Drinks"],
         "summary": "Get user's favorite cocktails",
         "operationId": "favorite",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page number",
+            "schema": {
+              "type": "string",
+              "example": "1",
+              "default": "1"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit of drinks per page",
+            "schema": {
+              "type": "string",
+              "example": "12",
+              "default": "12"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DrinkItem"
+                  "type": "object",
+                  "properties": {
+                    "favorites": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DrinkItem"
+                      }
+                    },
+                    "total": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "pages": {
+                      "type": "number",
+                      "example": 2
+                    }
                   }
                 }
               }
@@ -1098,6 +1159,10 @@
                 "example": "//www.gravatar.com/avatar/9cb6454d2428a2d6a6b15994fdbfa4e4"
               }
             }
+          },
+          "dayCount": {
+            "type": "boolean",
+            "example": "true"
           }
         }
       },

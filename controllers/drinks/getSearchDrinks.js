@@ -29,16 +29,20 @@ const getSearchDrinks = async (req, res) => {
     filter["ingredients.title"] = { $in: ingredientsArray };
   }
 
-  const result = await Recipe.find(filter, "-createdAt -updatedAt", {
-    skip,
-    limit,
-  }).populate("owner", "name email");
+  const result = await Recipe.find(filter, "-createdAt -updatedAt").populate(
+    "owner",
+    "name email"
+  );
 
   if (result.length === 0) {
     throw requestError(404, "Not found");
   }
 
-  res.json(result);
+  res.json({
+    result: result.splice(skip, limit),
+    total: result.length + 1,
+    pages: Math.ceil(result.length / limit + 1),
+  });
 };
 
 module.exports = getSearchDrinks;

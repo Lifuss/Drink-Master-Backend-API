@@ -20,14 +20,13 @@ const update = async (req, res, next) => {
 
       await cloudinary.uploader.destroy(publicId);
     }
+
     const upload = await cloudinary.uploader.upload(oldPath, {
       folder: "userAvatars",
       transformation: [{ width: 400, height: 400, crop: "fill" }],
     });
-    const newAvatarUrl = upload.url;
-
+    const newAvatarUrl = upload.secure_url;
     avatarThumb = newAvatarUrl;
-
     await fs.unlink(oldPath);
   }
 
