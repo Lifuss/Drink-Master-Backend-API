@@ -31,7 +31,12 @@ const login = async (req, res, next) => {
 
   res.json({
     token,
-    user: { name: user.name, avatarURL: user.avatarURL, isAdult: user.isAdult },
+    user: {
+      name: user.name,
+      avatarURL: user.avatarURL,
+      isAdult: user.isAdult,
+    },
+    visitCount: userData.visitCount,
     dayCount,
   });
 };
