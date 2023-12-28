@@ -20,7 +20,6 @@ router.patch(
   updateInfo
 );
 
-// POST subscribe http://localhost:3002/api/users/subscribe
 router.post("/subscribe", validateBody(schema.schemaSubscribe), subscribeEmail);
 
 module.exports = router;

@@ -14,7 +14,6 @@ const getSearchDrinks = async (req, res) => {
   }
 
   if (drink) {
-    // регулярний вираз для пошуку за частковою або неправильною назвою
     filter.drink = { $regex: new RegExp(drink, "i") };
   }
 
@@ -23,9 +22,7 @@ const getSearchDrinks = async (req, res) => {
   }
 
   if (ingredients) {
-    // ?ingredients=Prosecco,Campari => коктейлі, до яких входять Prosecco та/або Campari
     const ingredientsArray = ingredients.split(",");
-    // пошук коктейлів, в яких значення поля ingredients.title збігається з будь-яким значенням з масиву ingredientsArray, хоча б з одним ($in)
     filter["ingredients.title"] = { $in: ingredientsArray };
   }
 

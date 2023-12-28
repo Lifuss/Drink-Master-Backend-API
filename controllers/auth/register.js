@@ -13,7 +13,7 @@ const register = async (req, res, next) => {
   }
   const hashPassword = await bcrypt.hash(password, 5);
   const avatarURL = gravatar.url(email);
-  // token for verify letter
+
   const verifyToken = nanoid();
 
   let isAdult = false;

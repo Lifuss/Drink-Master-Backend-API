@@ -1,4 +1,3 @@
-// const { boolean } = require("joi");
 const { Schema } = require("mongoose");
 
 const userSchema = Schema(

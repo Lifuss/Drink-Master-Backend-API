@@ -12,7 +12,6 @@ const passport = require("../../middlewares/google-authenticate");
 
 const router = express.Router();
 
-// google
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
