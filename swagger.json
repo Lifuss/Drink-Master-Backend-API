@@ -14,7 +14,7 @@
       "url": "https://shaking-code-api-lifuss.onrender.com/api"
     },
     {
-      "url": "http://localhost:3002/api"
+      "url": "http://localhost:3030/api"
     }
   ],
 
@@ -184,30 +184,17 @@
         }
       }
     },
-    "/auth/logout": {
-      "get": {
+    "/auth/signout": {
+      "post": {
         "tags": ["Auth"],
-        "summary": "Logout user",
-        "operationId": "logout",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/logoutRequest"
-              }
-            }
-          },
-          "required": true
-        },
+        "summary": "Signout user",
+        "operationId": "signout",
         "responses": {
           "200": {
             "description": "successful operation"
           },
-          "400": {
-            "description": "Bad request"
-          },
-          "404": {
-            "description": "Not found"
+          "401": {
+            "description": "Unauthorized"
           }
         },
         "security": [
@@ -1185,16 +1172,6 @@
                 "example": "false"
               }
             }
-          }
-        }
-      },
-      "logoutRequest": {
-        "required": ["_id"],
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "example": "5f9f8b4b1c9d440000d3b3b5"
           }
         }
       },

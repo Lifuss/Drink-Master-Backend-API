@@ -9,7 +9,6 @@ const {
   googleAuth,
 } = require("../../controllers/auth");
 const passport = require("../../middlewares/google-authenticate");
-// const upload = require("../../middlewares/upload");
 
 const router = express.Router();
 
@@ -26,6 +25,6 @@ router.get(
 
 router.post("/signup", validateBody(schema.schemaRegister), singUp);
 router.post("/signin", validateBody(schema.schemaLogin), signIn);
-router.get("/logout", authentication, logout);
+router.post("/signout", authentication, logout);
 
 module.exports = router;

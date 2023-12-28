@@ -8,8 +8,8 @@ const updateVisitCount = async (user) => {
     const updateUser = await User.findByIdAndUpdate(
       user._id,
       {
-        $inc: { visitCount: 1 },
-        $set: { lastVisit: today },
+        visitCount: user.visitCount + 1,
+        lastVisit: today,
       },
       { new: true }
     );
@@ -17,6 +17,7 @@ const updateVisitCount = async (user) => {
 
     return sendMotivationalMessage;
   }
+
   return false;
 };
 
