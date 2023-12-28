@@ -11,7 +11,10 @@ const update = async (req, res, next) => {
   if (req.file) {
     const { path: oldPath } = req.file;
 
-    if (!req.user.avatarURL.includes("gravatar")) {
+    if (
+      !req.user.avatarURL.includes("gravatar") ||
+      !req.user.avatarURL.includes("google")
+    ) {
       const oldAvatarPublicId = req.user.avatarURL;
       const startsWith = oldAvatarPublicId.indexOf("userAvatars/");
       const publicIdWithExpansion = oldAvatarPublicId.slice(startsWith);
