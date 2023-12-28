@@ -10,7 +10,7 @@ const removeFav = async (req, res) => {
   if (!cocktail) {
     throw requestError(404, "Wrong ID");
   }
-  const updatedUser = await User.findByIdAndUpdate(
+  await User.findByIdAndUpdate(
     _id,
     { $pull: { favorites: cocktailId } },
     { new: true }
