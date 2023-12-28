@@ -12,7 +12,7 @@ const update = async (req, res, next) => {
     const { path: oldPath } = req.file;
 
     if (
-      !req.user.avatarURL.includes("gravatar") ||
+      !req.user.avatarURL.includes("gravatar") &&
       !req.user.avatarURL.includes("google")
     ) {
       const oldAvatarPublicId = req.user.avatarURL;
