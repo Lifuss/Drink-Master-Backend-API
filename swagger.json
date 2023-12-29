@@ -939,6 +939,20 @@
           }
         ]
       }
+    },
+    "/auth/google": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Redirect to google auth",
+        "operationId": "googleAuth",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": { "description": "Strict google info control" }
+        }
+      }
     }
   },
   "components": {
